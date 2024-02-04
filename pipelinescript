@@ -36,15 +36,4 @@ pipeline {
 
         // Add more stages as needed, such as deployment or additional testing
     }
-
-    post {
-        success {
-            // Actions to take if the pipeline is successful
-            // For example, send notifications or deploy the application
-        }
-        failure {
-            // Actions to take if the pipeline fails
-            // For example, send notifications or perform cleanup
-        }
-    }
 }
