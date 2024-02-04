@@ -15,7 +15,6 @@ pipeline {
                 script {
                     // Use the 'withDotNet' step to manage the .NET SDK installation
                     withDotNet(sdk: 'dotnetsdk') {
-                        sh 'dotnet restore'
                         sh 'dotnet build'
                     }
                 }
