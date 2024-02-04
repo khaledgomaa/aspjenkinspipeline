@@ -17,12 +17,12 @@ pipeline {
 
         stage('Build') {
             steps {
-                withDotNet(
-                    dotNetVersion: '8.0.101', 
-                    installationName: 'dotnet-sdk'
-                ) {
-                    sh 'dotnet restore'
-                    sh 'dotnet build'
+                script {
+                    // Use the 'withDotNet' step to manage the .NET SDK installation
+                    withDotNet(installationName: 'dotnet-sdk') {
+                        sh 'dotnet restore'
+                        sh 'dotnet build'
+                    }
                 }
             }
         }
