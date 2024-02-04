@@ -1,10 +1,5 @@
 pipeline {
     agent any
-    
-    environment {
-        DOTNET_HOME = tool 'dotnet'
-        PATH = "${DOTNET_HOME}/bin:${env.PATH}"
-    }
 
     stages {
         stage('Checkout') {
