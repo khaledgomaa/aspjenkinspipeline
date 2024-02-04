@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        DOTNET_HOME = tool 'dotnetsdk'
+        PATH = "${env.DOTNET_HOME}/bin:${env.PATH}"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -12,10 +17,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Use the 'withDotNet' step to manage the .NET SDK installation
-                    withDotNet(dotNetVersion: '8.0.101', installationName: 'dotnetsdk') {
-                        sh 'dotnet build'
-                    }
+                    // Build using the .NET CLI
+                    sh 'dotnet build'
                 }
             }
         }
