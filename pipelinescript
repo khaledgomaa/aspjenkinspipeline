@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        DOTNET_HOME = tool '/var/jenkins_home/tools/io.jenkins.plugins.dotnet.DotNetSDK/dotnetsdk/dotnet'
+        DOTNET_HOME = tool 'dotnet'
         PATH = "${DOTNET_HOME}/bin:${env.PATH}"
     }
 
