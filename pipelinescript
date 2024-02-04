@@ -6,7 +6,7 @@ pipeline {
             steps {
                 // Check out your source code repository
                 // For example, using Git
-                git 'https://github.com/khaledgomaa/aspjenkinspipeline.git'
+                checkout([$class: 'GitSCM', branches: [[name: 'main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/khaledgomaa/aspjenkinspipeline.git']]])
             }
         }
 
