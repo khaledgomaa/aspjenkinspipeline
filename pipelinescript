@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     // Use the 'withDotNet' step to manage the .NET SDK installation
-                    withDotNet(sdk: 'dotnetsdk') {
+                    withDotNet(dotNetVersion: '8.0.101') {
                         sh 'dotnet build'
                     }
                 }
