@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     // Build using the .NET CLI
-                    sh 'dotnet build'
+                    sh '/var/jenkins_home/tools/io.jenkins.plugins.dotnet.DotNetSDK/dotnetsdk/dotnet build'
                 }
             }
         }
