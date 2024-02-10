@@ -1,27 +1,46 @@
 pipeline {
     agent any
 
-    environment {
-        DOTNET_HOME = tool 'dotnetsdk'
-        PATH = "${env.DOTNET_HOME}/bin:${env.PATH}"
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                // Check out your source code repository
-                checkout([$class: 'GitSCM', branches: [[name: 'main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/khaledgomaa/aspjenkinspipeline.git']]])
+                // Checkout the code from GitHub
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/khaledgomaa/aspjenkinspipeline.git']])
             }
         }
 
         stage('Build') {
             steps {
-                script {
-                    // Build using the .NET CLI
-                    sh '/var/jenkins_home/tools/io.jenkins.plugins.dotnet.DotNetSDK/dotnetsdk/dotnet build'
-                }
+                dotnetBuild project: 'JenkinsPipeline.sln', sdk: 'dotnetsdk'
             }
         }
-        // Add more stages as needed, such as deployment or additional testing
+        
+        stage('Run Tests') {
+            steps {
+                dotnetTest sdk: 'dotnetsdk'
+            }
+        }
+    }
+    
+    post{
+        success{
+            script{
+                def to = emailextrecipients([
+                      [$class: 'CulpritsRecipientProvider'],
+                      [$class: 'DevelopersRecipientProvider'],
+                      [$class: 'RequesterRecipientProvider']
+                        ])
+                        // set variables
+                        def subject = "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} ${currentBuild.result}"
+                        def content = '${JELLY_SCRIPT,template="html"}'
+                    
+                        // send email
+                        if(to != null && !to.isEmpty()) {
+                          emailext(body: content, mimeType: 'text/html',
+                             replyTo: '$DEFAULT_REPLYTO', subject: subject,
+                             to: to, attachLog: true )
+                        }
+            }
+        }
     }
 }
